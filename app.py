@@ -76,7 +76,7 @@ def add_intake():
     if amount <= 0:
         return jsonify({"error": "amount_ml must be positive"}), 400
     
-    key = str(date.today())
+    key = f"{user_id}:{date.today()}"
     daily_totals[key] = daily_totals.get(key, 0.0) + amount
     total = daily_totals[key]
     goal = get_goal(user_id)
@@ -107,7 +107,7 @@ def get_user_goal(user_id):
 @app.get("/intake/today")
 def get_today():
     user_id = request.args.get("user_id", "default_user")
-    key = str(date.today())
+    key = f"{user_id}:{date.today()}"
     total = daily_totals.get(key, 0.0)
     goal = get_goal(user_id)
     return jsonify({
